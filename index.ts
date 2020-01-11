@@ -24,7 +24,7 @@ export default function(options = {}) {
   // `extractKeys` adapts for the different structure to return the list of
   // keys.
   const extractKeys = Platform.select({
-    ios: (items) => items[0].map((item) => item.key),
+    ios: (items: any) => items[0].map((item: any) => item.key),
     android: Object.keys,
   });
 
