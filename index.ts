@@ -1,5 +1,5 @@
-import { Platform } from "react-native";
-import sensitiveInfo from "react-native-sensitive-info";
+import {Platform} from 'react-native';
+import sensitiveInfo from 'react-native-sensitive-info';
 
 export default function(options = {}) {
   // react-native-sensitive-info returns different a different structure on iOS
@@ -24,21 +24,21 @@ export default function(options = {}) {
   // `extractKeys` adapts for the different structure to return the list of
   // keys.
   const extractKeys = Platform.select({
-    ios: items => items[0].map(item => item.key),
-    android: Object.keys
+    ios: (items) => items[0].map((item) => item.key),
+    android: Object.keys,
   });
 
-  const noop = () => null;
+  const noop = (arg1?: any, arg2?: any) => null;
 
   return {
-    async getItem(key, callback = noop) {
+    async getItem(key: any, callback = noop) {
       try {
         // getItem() returns `null` on Android and `undefined` on iOS;
         // explicitly return `null` here as `undefined` causes an exception
         // upstream.
-        let result = await sensitiveInfo.getItem(key, options);
+        let result: any = await sensitiveInfo.getItem(key, options);
 
-        if (typeof result === "undefined") {
+        if (typeof result === 'undefined') {
           result = null;
         }
 
@@ -51,7 +51,7 @@ export default function(options = {}) {
       }
     },
 
-    async setItem(key, value, callback = noop) {
+    async setItem(key: any, value: any, callback = noop) {
       try {
         await sensitiveInfo.setItem(key, value, options);
         callback(null);
@@ -61,7 +61,7 @@ export default function(options = {}) {
       }
     },
 
-    async removeItem(key, callback = noop) {
+    async removeItem(key: any, callback = noop) {
       try {
         await sensitiveInfo.deleteItem(key, options);
         callback(null);
@@ -74,7 +74,7 @@ export default function(options = {}) {
     async getAllKeys(callback = noop) {
       try {
         const values = await sensitiveInfo.getAllItems(options);
-        const result = extractKeys(values);
+        const result = (extractKeys !== undefined) ? extractKeys(values) : null;
 
         callback(null, result);
 
@@ -83,6 +83,6 @@ export default function(options = {}) {
         callback(error);
         throw error;
       }
-    }
+    },
   };
 }
